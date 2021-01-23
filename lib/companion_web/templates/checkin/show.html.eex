@@ -1,0 +1,18 @@
+<h1>Show Checkin</h1>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @checkin.date %>
+  </li>
+
+  <li>
+    <strong>Complete:</strong>
+    <%= @checkin.complete %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.checkin_path(@conn, :edit, @checkin) %></span>
+<span><%= link "Back", to: Routes.checkin_path(@conn, :index) %></span>

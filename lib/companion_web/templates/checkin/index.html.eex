@@ -1,0 +1,28 @@
+<h1>Listing Checkins</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Complete</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for checkin <- @checkins do %>
+    <tr>
+      <td><%= checkin.date %></td>
+      <td><%= checkin.complete %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.checkin_path(@conn, :show, checkin) %></span>
+        <span><%= link "Edit", to: Routes.checkin_path(@conn, :edit, checkin) %></span>
+        <span><%= link "Delete", to: Routes.checkin_path(@conn, :delete, checkin), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Checkin", to: Routes.checkin_path(@conn, :new) %></span>

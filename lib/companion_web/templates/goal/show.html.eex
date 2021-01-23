@@ -1,0 +1,23 @@
+<h1>Show Goal</h1>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @goal.title %>
+  </li>
+
+  <li>
+    <strong>Objective:</strong>
+    <%= @goal.objective %>
+  </li>
+
+  <li>
+    <strong>Unit:</strong>
+    <%= @goal.unit %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.goal_path(@conn, :edit, @goal) %></span>
+<span><%= link "Back", to: Routes.goal_path(@conn, :index) %></span>
