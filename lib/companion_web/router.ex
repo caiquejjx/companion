@@ -1,6 +1,10 @@
 defmodule CompanionWeb.Router do
   use CompanionWeb, :router
 
+  import Phoenix.LiveView.Router
+
+  # socket "live", Phoenix.LiveView.Socket
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -19,7 +23,7 @@ defmodule CompanionWeb.Router do
     resources "/checkins", CheckinController
     resources "/goals", GoalController
 
-    get "/", PageController, :index
+    live "/", GoalLive, :index
   end
 
   # Other scopes may use custom stacks.
