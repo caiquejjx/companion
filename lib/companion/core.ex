@@ -53,8 +53,14 @@ defmodule Companion.Core do
     %Goal{}
     |> Goal.changeset(attrs)
     |> Repo.insert()
+    |> (&Repo.preload(elem(&1, 1), [:checkins])).()
+    |> (&broadcast({:ok, &1}, :goal_created)).()
   end
 
+  @spec update_goal(
+          Companion.Core.Goal.t(),
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: {:error, any} | {:ok, any}
   @doc """
   Updates a goal.
 
@@ -71,6 +77,8 @@ defmodule Companion.Core do
     goal
     |> Goal.changeset(attrs)
     |> Repo.update()
+    |> (&Repo.preload(elem(&1, 1), [:checkins])).()
+    |> (&broadcast({:ok, &1}, :goal_updated)).()
   end
 
   @doc """
@@ -198,5 +206,16 @@ defmodule Companion.Core do
   """
   def change_checkin(%Checkin{} = checkin, attrs \\ %{}) do
     Checkin.changeset(checkin, attrs)
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Companion.PubSub, "goals")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, goal}, event) do
+    Phoenix.PubSub.broadcast(Companion.PubSub, "goals", {event, goal})
+    {:ok, goal}
   end
 end
